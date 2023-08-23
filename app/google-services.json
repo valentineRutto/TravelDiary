@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583593676263",
+    "project_id": "traveldiary-764ec",
+    "storage_bucket": "traveldiary-764ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583593676263:android:297dbbc99694d5949ac142",
+        "android_client_info": {
+          "package_name": "com.valentinerutto.traveldiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583593676263-maipcvmnkvrbohn3gifcu4qku16i9km0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1UFY-rBUIdbkiVJgm06UNgQVS4Ps0-Pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583593676263-maipcvmnkvrbohn3gifcu4qku16i9km0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
