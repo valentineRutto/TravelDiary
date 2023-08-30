@@ -9,5 +9,5 @@ import com.valentinerutto.traveldiary.util.BaseDao
 @Dao
 interface TravelDao : BaseDao<TravelDetailsEntity>{
     @Query("SELECT * FROM travel_table")
-    suspend fun getTravelDetails(): LiveData<List<TravelDetailsEntity>>
+     fun getTravelDetails(): LiveData<List<TravelDetailsEntity>>
 }

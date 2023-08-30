@@ -1,4 +1,3 @@
 package com.valentinerutto.traveldiary.ui
 
-class TravelAdapter {
-}
+class TravelAdapter

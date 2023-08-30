@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/RegisterFragment">
+
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="com.valentinerutto.traveldiary.ui.registration.RegisterFragment"
+        android:label="@string/register_fragment_label"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_RegisterFragment_to_LogInFragment"
+            app:destination="@id/LogInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/LogInFragment"
+        android:name="com.valentinerutto.traveldiary.ui.registration.SignInFragment"
+        android:label="@string/login_fragment_label"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/action_LogInFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+
+<!--        <action android:id="@+id/action_Second2Fragment_to_TravelEntry"-->
+<!--            -->
+<!--            />-->
+    </fragment>
+</navigation>
