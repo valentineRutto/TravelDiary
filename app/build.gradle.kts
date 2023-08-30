@@ -57,15 +57,22 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // Kotlin
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
+
 
     // Room
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
-
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
-
     implementation("io.coil-kt:coil-svg:2.1.0")
 
     //Retrofit

@@ -3,11 +3,11 @@ package com.valentinerutto.traveldiary.ui.registration
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -74,7 +74,9 @@ class SignInFragment : Fragment() {
                             getString(R.string.user_logged_in_successfully),
                             Toast.LENGTH_SHORT
                         ).show()
-                        startActivity(Intent(     requireActivity(), TravelEntry::class.java))
+                        startActivity(Intent(requireActivity(), TravelEntry::class.java))
+                        activity?.finish()
+
                     } else {
                         Toast.makeText(
                             requireActivity(),

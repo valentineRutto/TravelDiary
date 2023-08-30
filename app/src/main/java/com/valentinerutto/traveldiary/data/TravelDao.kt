@@ -10,4 +10,5 @@ import com.valentinerutto.traveldiary.util.BaseDao
 interface TravelDao : BaseDao<TravelDetailsEntity>{
     @Query("SELECT * FROM travel_table")
      fun getTravelDetails(): LiveData<List<TravelDetailsEntity>>
+
 }

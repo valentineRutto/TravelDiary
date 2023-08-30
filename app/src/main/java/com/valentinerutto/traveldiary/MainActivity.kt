@@ -25,11 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         myRef.setValue("Hello, World!")
 
-        // setSupportActionBar(binding.toolbar)
+        //setSupportActionBar(binding.toolbar)
 
-        viewmodel.insertDetails()
-
-        viewmodel.getDetails()
 
     }
 }

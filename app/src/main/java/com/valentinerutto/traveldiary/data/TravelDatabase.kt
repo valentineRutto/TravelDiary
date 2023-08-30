@@ -8,7 +8,7 @@ import com.valentinerutto.traveldiary.data.model.TravelDetailsEntity
 import com.valentinerutto.traveldiary.util.Constants
 
 @Database(
-    entities = [TravelDetailsEntity::class], version = 1,
+    entities = [TravelDetailsEntity::class], version = 2,
 
     exportSchema = false
 )
