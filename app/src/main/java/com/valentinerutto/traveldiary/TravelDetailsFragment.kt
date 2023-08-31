@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class TravelDetailsFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
     val viewmodel by sharedViewModel<TravelViewModel>()
@@ -22,6 +22,7 @@ class SecondFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +38,13 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewmodel.selectedTravelDetails?.observe(viewLifecycleOwner, Observer {
-            binding.textviewSecond.text = it.title
+            binding.textviewSecond.text = it?.title
         })
 
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
+
     }
 
     override fun onDestroyView() {

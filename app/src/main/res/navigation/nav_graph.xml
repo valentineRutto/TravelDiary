@@ -7,22 +7,41 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.valentinerutto.traveldiary.FirstFragment"
+        android:name="com.valentinerutto.traveldiary.TravelListFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+
+        <action
+            android:id="@+id/action_FirstFragment_to_AddEntryFragment"
+            app:destination="@id/AddEntryFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.valentinerutto.traveldiary.SecondFragment"
+        android:name="com.valentinerutto.traveldiary.TravelDetailsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddEntryFragment"
+        android:name="com.valentinerutto.traveldiary.ui.AddTravelDetailFragment"
+        android:label="Add Entry"
+        tools:layout="@layout/fragment_add_travel_detail">
+
+        <action
+            android:id="@+id/action_AddEntryFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
 
     </fragment>

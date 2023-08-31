@@ -66,7 +66,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
 
-
     // Room
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
@@ -89,10 +88,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
 
-//Koin for DI
+    //Koin for DI
     implementation("io.insert-koin:koin-android:3.4.3")
     // Timber library
     implementation("com.jakewharton.timber:timber:5.0.1")
+    testImplementation ("io.mockk:mockk:1.13.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

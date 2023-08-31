@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,14 +15,12 @@ import com.valentinerutto.traveldiary.ui.TravelViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class FirstFragment : Fragment() {
+class TravelListFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private val viewModel by sharedViewModel<TravelViewModel>()
     private lateinit var travelAdapter: TravelAdapter
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,15 +36,11 @@ class FirstFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setOnEventClickListeners()
 
         travelAdapter = TravelAdapter(object : OnTravelEntryClicked {
             override fun showTravelDetails(travel: TravelDetailsEntity) {
-                Toast.makeText(
-                    requireActivity(),
-                   travel.title,
-                    Toast.LENGTH_SHORT
-                ).show()
-                viewModel.selectedTravelDetails?.value = travel
+                viewModel._selectedTravelDetails.value = travel
                 findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
             }
         })
@@ -57,6 +50,12 @@ class FirstFragment : Fragment() {
                 submitList(it)
             }
         })
+    }
+
+    private fun setOnEventClickListeners() {
+        binding.fabAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_AddEntryFragment)
+        }
     }
 
     override fun onDestroyView() {

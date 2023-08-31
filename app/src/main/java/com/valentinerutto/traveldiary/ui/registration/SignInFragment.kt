@@ -51,7 +51,6 @@ class SignInFragment : Fragment() {
         binding.login.setOnClickListener {
        loginUser()
         }
-
     }
 
     private fun loginUser() {
@@ -89,7 +88,6 @@ class SignInFragment : Fragment() {
                 }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

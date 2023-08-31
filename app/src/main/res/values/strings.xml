@@ -55,4 +55,12 @@
     <string name="user_logged_in_successfully">User logged in successfully</string>
     <string name="log_in_error">"Log in Error: "</string>
     <string name="title_activity_register_login">RegisterLoginActivity</string>
+    <string name="title_cannot_be_empty">Title cannot be empty</string>
+    <string name="description_cannot_be_empty">Description cannot be empty</string>
+    <string name="add_location">Add Location</string>
+    <string name="add_picture">Add Picture</string>
+    <string name="save">Save</string>
+    <string name="actions">Actions</string>
+    <string name="add_description">Add description</string>
+    <string name="title">Title</string>
 </resources>

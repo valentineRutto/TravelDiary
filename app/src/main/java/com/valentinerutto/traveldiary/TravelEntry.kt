@@ -34,10 +34,6 @@ class TravelEntry : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_travel_entry)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-//        binding.fab.setOnClickListener { view ->
-//            startActivity(Intent(this, MainActivity::class.java))
-//        }
     }
 
     override fun onStart() {
