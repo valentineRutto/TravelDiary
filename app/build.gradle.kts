@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.activity:activity-ktx:1.7.2")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
@@ -90,6 +91,8 @@ dependencies {
 
     //Koin for DI
     implementation("io.insert-koin:koin-android:3.4.3")
+    implementation("io.coil-kt:coil:2.4.0")
+
     // Timber library
     implementation("com.jakewharton.timber:timber:5.0.1")
     testImplementation ("io.mockk:mockk:1.13.3")

@@ -1,33 +1,31 @@
 package com.valentinerutto.traveldiary.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.valentinerutto.traveldiary.R
 import com.valentinerutto.traveldiary.databinding.FragmentAddTravelDetailBinding
+import com.valentinerutto.traveldiary.util.ImageUtil.getImageFromUri
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddTravelDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddTravelDetailFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var _binding: FragmentAddTravelDetailBinding? = null
     val viewmodel by sharedViewModel<TravelViewModel>()
 
@@ -38,10 +36,7 @@ class AddTravelDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -56,15 +51,36 @@ class AddTravelDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.txtDateCreated.text = getFormattedDate()
         setOnEventClickListener()
-        setVisibilityfalse()
+        setVisibilityFalse()
+
+        viewmodel.selectedPhotos.observe(viewLifecycleOwner, Observer {
+            binding.img.load(it[0])
+            binding.txtImgSize.text = requireContext().getString(R.string.photos_selected, it.size )
+        })
     }
+
+    private val multiplePhotoPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            if (uris.isNotEmpty()) {
+                viewmodel._selectedPhotos.value = uris
+                Toast.makeText(
+                    requireActivity(), "Media selected", Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireActivity(), "No media selected", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
     private fun setOnEventClickListener() {
         binding.saveFab.setOnClickListener {
             addEntry()
         }
 
-        binding.addPicFab.setOnClickListener { }
+        binding.addPicFab.setOnClickListener {
+            multiplePhotoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
         binding.addLocFab.setOnClickListener { }
         binding.moreActionFab.setOnClickListener {
             setActionFabVisibility(isAllFabsVisible)
@@ -77,7 +93,7 @@ class AddTravelDetailFragment : Fragment() {
         if (!isActionsVisible) {
             setVisibilityTrue()
         } else {
-            setVisibilityfalse()
+            setVisibilityFalse()
         }
     }
 
@@ -94,7 +110,7 @@ class AddTravelDetailFragment : Fragment() {
         isAllFabsVisible = true
     }
 
-    private fun setVisibilityfalse() {
+    private fun setVisibilityFalse() {
         binding.saveFab.hide()
         binding.addLocFab.hide()
         binding.addPicFab.hide()
@@ -149,10 +165,8 @@ class AddTravelDetailFragment : Fragment() {
          */
         @JvmStatic
         fun newInstance(param1: String, param2: String) = AddTravelDetailFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
+
         }
+
     }
 }
