@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.valentinerutto.traveldiary.databinding.FragmentSecondBinding
 import com.valentinerutto.traveldiary.ui.TravelViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.io.File
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -37,13 +39,17 @@ class TravelDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewmodel.selectedTravelDetails?.observe(viewLifecycleOwner, Observer {
-            binding.textviewSecond.text = it?.title
+        viewmodel.selectedTravelDetails.observe(viewLifecycleOwner, Observer {
+            binding.txtTitle.text = it?.title
+            binding.txtDate.text = it?.date
+            binding.txtDesc.text = it?.notes
+            binding.txtLoc.text = it?.location
+            binding.ivImage.load(it?.photo)
         })
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
+//        binding.buttonSecond.setOnClickListener {
+//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+//        }
 
     }
 

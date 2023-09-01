@@ -34,6 +34,7 @@ import com.valentinerutto.traveldiary.R
 import com.valentinerutto.traveldiary.data.model.SelectedImages
 import com.valentinerutto.traveldiary.data.model.TravelDetailsEntity
 import com.valentinerutto.traveldiary.databinding.FragmentAddTravelDetailBinding
+import com.valentinerutto.traveldiary.util.ImageUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -285,7 +286,7 @@ class AddTravelDetailFragment : Fragment() {
                 id = 0,
                 date = date,
                 location = location,
-                photo = selectedImages[0].path,
+                photo =  selectedImages[0].toString(),
                 title = title,
                 notes = description
             )

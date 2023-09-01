@@ -36,7 +36,7 @@ class TravelAdapter(private var itemClickListener: OnTravelEntryClicked) :
 
             binding.txtTitle.text = travel.title
             binding.txtLocation.text = travel.location
-            binding.img.load(Uri.parse(travel.photo))
+            binding.img.load(travel.photo)
             itemView.setOnClickListener {
                 itemClickListener.showTravelDetails(travel)
             }
