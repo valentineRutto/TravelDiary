@@ -1,9 +1,13 @@
 package com.valentinerutto.traveldiary.ui
 
-import android.app.Activity
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +15,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import coil.load
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.firebase.auth.FirebaseAuth
 import com.valentinerutto.traveldiary.R
+import com.valentinerutto.traveldiary.data.model.SelectedImages
+import com.valentinerutto.traveldiary.data.model.TravelDetailsEntity
 import com.valentinerutto.traveldiary.databinding.FragmentAddTravelDetailBinding
-import com.valentinerutto.traveldiary.util.ImageUtil.getImageFromUri
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -28,14 +43,21 @@ class AddTravelDetailFragment : Fragment() {
 
     private var _binding: FragmentAddTravelDetailBinding? = null
     val viewmodel by sharedViewModel<TravelViewModel>()
+    private lateinit var imageAdapter: SelectedImageAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private var isAllFabsVisible: Boolean = false
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var latitude: Double? = null
+    var longitude: Double? = null
+    var selectedImages = mutableListOf<Uri>()
+    var auth: FirebaseAuth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        checkPermissions()
 
     }
 
@@ -52,11 +74,69 @@ class AddTravelDetailFragment : Fragment() {
         binding.txtDateCreated.text = getFormattedDate()
         setOnEventClickListener()
         setVisibilityFalse()
+        imageAdapter = SelectedImageAdapter()
 
-        viewmodel.selectedPhotos.observe(viewLifecycleOwner, Observer {
-            binding.img.load(it[0])
-            binding.txtImgSize.text = requireContext().getString(R.string.photos_selected, it.size )
+        binding.imageList.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+
+        viewmodel.selectedPhotos.observe(viewLifecycleOwner, Observer { images ->
+            selectedImages.addAll(images)
+            val selectedimages = images.map { SelectedImages(uri = it) }
+            binding.imageList.adapter = imageAdapter.apply {
+                submitList(selectedimages)
+            }
         })
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLastLocation() {
+        val locationRequest = LocationRequest.create() // Create location request.
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY // Set priority.
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                latitude = location.latitude
+                longitude = location.longitude
+
+            } else {
+                getCurrentLocation()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation() {
+        fusedLocationClient.getCurrentLocation(
+            Priority.PRIORITY_BALANCED_POWER_ACCURACY, CancellationTokenSource().token
+        ).addOnSuccessListener {
+            val location: Location = it
+            latitude = location.latitude
+            longitude = location.longitude
+
+            viewmodel._currentLocation.value = " $longitude , $latitude"
+
+        }
+    }
+
+    private fun checkPermissions() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PERMISSION_GRANTED -> {
+                getLastLocation()
+            }
+
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
+                showAlertDialog(
+                )
+            }
+
+            else -> {
+                locationPermissionLauncher.launch(permissionsList)
+            }
+        }
+
+
     }
 
     private val multiplePhotoPickerLauncher =
@@ -73,6 +153,50 @@ class AddTravelDetailFragment : Fragment() {
             }
         }
 
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            getLastLocation()
+        } else {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Location Permission is Required")
+            builder.setMessage("Location Permission is required for better .... Please allow location in settings...")
+
+            // Positive Button
+            builder.setPositiveButton("Enable") { dialog: DialogInterface, which: Int ->
+                openAppSettings()
+            }
+
+            // Negative Button
+            builder.setNegativeButton("Cancel") { dialog: DialogInterface, which: Int ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        }
+    }
+    private val appSettingsLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PERMISSION_GRANTED
+        ) {
+            getLastLocation()
+        }
+    }
+
+    private fun openAppSettings() {
+
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", requireActivity().packageName, null)
+        intent.data = uri
+        appSettingsLauncher.launch(intent)
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun setOnEventClickListener() {
         binding.saveFab.setOnClickListener {
             addEntry()
@@ -81,7 +205,22 @@ class AddTravelDetailFragment : Fragment() {
         binding.addPicFab.setOnClickListener {
             multiplePhotoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        binding.addLocFab.setOnClickListener { }
+        binding.addLocFab.setOnClickListener {
+
+            viewmodel.currentLocation.observe(viewLifecycleOwner) { location ->
+                Toast.makeText(requireContext(), location, Toast.LENGTH_LONG).show()
+
+//                if (location.isNullOrEmpty()) {
+//                    Toast.makeText(
+//                        requireActivity(), getString(R.string.turn_on_gps), Toast.LENGTH_LONG
+//                    ).show()
+//                } else {
+                    binding.txtLocation.setText(  "Location: $location")
+              //  }
+            }
+
+        }
+
         binding.moreActionFab.setOnClickListener {
             setActionFabVisibility(isAllFabsVisible)
         }
@@ -118,7 +257,6 @@ class AddTravelDetailFragment : Fragment() {
         binding.addLocActionText.isVisible = false
         binding.addPicActionText.isVisible = false
         binding.saveActionText.isVisible = false
-
         binding.moreActionFab.shrink()
 
         isAllFabsVisible = false
@@ -128,6 +266,7 @@ class AddTravelDetailFragment : Fragment() {
         val title = binding.entryDetailsTitle.text.toString().trim()
         val description = binding.entryDetailsDescription.text.toString().trim()
         val date = binding.txtDateCreated.text.toString().trim()
+        val location = binding.txtLocation.text.toString().trim()
 
         if (TextUtils.isEmpty(title)) {
             binding.entryDetailsTitle.error = getString(R.string.title_cannot_be_empty)
@@ -135,9 +274,34 @@ class AddTravelDetailFragment : Fragment() {
         } else if (TextUtils.isEmpty(description)) {
             binding.entryDetailsDescription.error = getString(R.string.description_cannot_be_empty)
             binding.entryDetailsDescription.requestFocus()
-        } else {
+        } else if (selectedImages.isEmpty()) {
+            Toast.makeText(requireContext(), "Enter photos", Toast.LENGTH_LONG).show()
+        }
+//        else if (location.isEmpty()) {
+//            Toast.makeText(requireContext(), "Enter Location", Toast.LENGTH_LONG).show()
+//        }
+        else {
+            val entry = TravelDetailsEntity(
+                id = 0,
+                date = date,
+                location = location,
+                photo = selectedImages[0].path,
+                title = title,
+                notes = description
+            )
+            viewmodel.insertDetails(entry)
+            clearEntryFields()
             findNavController().navigate(R.id.action_AddEntryFragment_to_FirstFragment)
         }
+    }
+
+    private fun clearEntryFields() {
+
+        binding.entryDetailsTitle.text.clear()
+        binding.entryDetailsDescription.text.clear()
+        binding.txtDateCreated.text = ""
+        viewmodel._selectedPhotos.value= emptyList()
+        selectedImages.clear()
 
     }
 
@@ -149,24 +313,36 @@ class AddTravelDetailFragment : Fragment() {
         return sdf.format(dateTime)
     }
 
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Location Permission is Required")
+        builder.setMessage("Location Permission is required for better .... Please allow location in settings...")
+
+        // Positive Button
+        builder.setPositiveButton("Enable") { dialog: DialogInterface, which: Int ->
+            locationPermissionLauncher.launch(permissionsList)
+
+        }
+
+        // Negative Button
+        builder.setNegativeButton("Cancel") { dialog: DialogInterface, which: Int ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddTravelDetailFragment.
-         */
+        const val permissionsList = Manifest.permission.ACCESS_COARSE_LOCATION
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) = AddTravelDetailFragment().apply {
-
-        }
-
+        fun newInstance() = AddTravelDetailFragment()
     }
 }

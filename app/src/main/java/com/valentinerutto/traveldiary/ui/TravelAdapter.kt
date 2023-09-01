@@ -1,10 +1,12 @@
 package com.valentinerutto.traveldiary.ui
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.valentinerutto.traveldiary.data.model.TravelDetailsEntity
 import com.valentinerutto.traveldiary.databinding.ItemTravelEntryRowBinding
 
@@ -34,6 +36,7 @@ class TravelAdapter(private var itemClickListener: OnTravelEntryClicked) :
 
             binding.txtTitle.text = travel.title
             binding.txtLocation.text = travel.location
+            binding.img.load(Uri.parse(travel.photo))
             itemView.setOnClickListener {
                 itemClickListener.showTravelDetails(travel)
             }

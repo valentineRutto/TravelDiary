@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("androidx.cardview:cardview:1.0.0")
 
-    // Kotlin
+    // navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
 
@@ -73,14 +73,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
-    implementation("io.coil-kt:coil-svg:2.1.0")
+    //coil
+    implementation("io.coil-kt:coil:2.4.0")
 
-    //Retrofit
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    //Gson
+    implementation ("com.google.code.gson:gson:2.9.0")
 
     //Firebase
     // Import the BoM for the Firebase platform
@@ -88,15 +85,13 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
+    //location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     //Koin for DI
     implementation("io.insert-koin:koin-android:3.4.3")
-    implementation("io.coil-kt:coil:2.4.0")
 
-    // Timber library
-    implementation("com.jakewharton.timber:timber:5.0.1")
     testImplementation ("io.mockk:mockk:1.13.3")
-
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

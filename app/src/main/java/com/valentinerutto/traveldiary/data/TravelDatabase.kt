@@ -9,9 +9,9 @@ import com.valentinerutto.traveldiary.util.Constants
 
 @Database(
     entities = [TravelDetailsEntity::class], version = 2,
-
     exportSchema = false
 )
+//@TypeConverter(ListStringConverter::class)
 abstract class TravelDatabase : RoomDatabase() {
     abstract fun travelDao(): TravelDao
 

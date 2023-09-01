@@ -12,25 +12,23 @@ import kotlinx.coroutines.launch
 
 class TravelViewModel(private val travelRepository: TravelRepository) : ViewModel() {
     var mAllDetails: LiveData<List<TravelDetailsEntity>>? = null
+
+    val _currentLocation = MutableLiveData<String>()
+    val currentLocation: LiveData<String?>
+        get() = _currentLocation
+
     val _selectedTravelDetails = MutableLiveData<TravelDetailsEntity>()
     val selectedTravelDetails: LiveData<TravelDetailsEntity?>
         get() = _selectedTravelDetails
-  val _selectedPhotos = MutableLiveData<List<Uri>>()
+
+    val _selectedPhotos = MutableLiveData<List<Uri>>()
     val selectedPhotos: LiveData<List<Uri>>
         get() = _selectedPhotos
 
-    fun insertDetails() {
+    fun insertDetails(entry: TravelDetailsEntity) {
         viewModelScope.launch {
             travelRepository.insertDetails(
-                TravelDetailsEntity(
-                    1,
-                    "work it out",
-                    3,
-                    location = "nairobi",
-                    photo = ",",
-                    notes = "--",
-                    date = 12220
-                )
+                entry
             )
         }
     }
@@ -39,5 +37,9 @@ class TravelViewModel(private val travelRepository: TravelRepository) : ViewMode
         viewModelScope.launch {
             mAllDetails = travelRepository.getAllTravelDetails()
         }
+    }
+
+    suspend fun searchEntries(queryText: String): List<TravelDetailsEntity> {
+        return travelRepository.searchEntries(queryText)
     }
 }

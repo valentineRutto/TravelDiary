@@ -29,7 +29,6 @@ class TravelEntry : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         auth = FirebaseAuth.getInstance()
-        viewmodel.insertDetails()
 
         val navController = findNavController(R.id.nav_host_fragment_content_travel_entry)
         appBarConfiguration = AppBarConfiguration(navController.graph)
