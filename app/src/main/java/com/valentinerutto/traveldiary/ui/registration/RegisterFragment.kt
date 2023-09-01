@@ -97,8 +97,8 @@ class RegisterFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-        startActivity(Intent(requireActivity(), TravelEntry::class.java))
-        activity?.finish()
+//        startActivity(Intent(requireActivity(), TravelEntry::class.java))
+//        activity?.finish()
     }
 
     override fun onDestroyView() {

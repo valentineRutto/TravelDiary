@@ -81,21 +81,18 @@ class TravelListFragment : Fragment() {
         search: Boolean = false,
     ) {
 
-
         if (entries.isEmpty()) {
             binding.entryList.isVisible = false
             binding.entryErrorTextView.isVisible = true
+
+            binding.entryListEmptyText.isVisible = true
 
             if (search && searchInput.isNotBlank()) {
                 binding.entryErrorTextView.text = "No Entry Found. Click + to add"
                 binding.entryListEmptyText.isVisible = false
 
             }
-//            else {
-//
-//                binding.entryErrorTextView.isVisible = false
-//                binding.entryListEmptyText.isVisible = true
-//            }
+
 
         } else {
 
