@@ -1,4 +1,4 @@
-package com.valentinerutto.traveldiary
+package com.valentinerutto.traveldiary.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.valentinerutto.traveldiary.R
 import com.valentinerutto.traveldiary.data.model.TravelDetailsEntity
 import com.valentinerutto.traveldiary.databinding.FragmentFirstBinding
-import com.valentinerutto.traveldiary.ui.OnTravelEntryClicked
-import com.valentinerutto.traveldiary.ui.TravelAdapter
-import com.valentinerutto.traveldiary.ui.TravelViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

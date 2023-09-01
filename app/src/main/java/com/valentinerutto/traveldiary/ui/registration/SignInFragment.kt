@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.valentinerutto.traveldiary.R
-import com.valentinerutto.traveldiary.TravelEntry
+import com.valentinerutto.traveldiary.ui.TravelEntry
 import com.valentinerutto.traveldiary.databinding.FragmentSignInBinding
 
 /**

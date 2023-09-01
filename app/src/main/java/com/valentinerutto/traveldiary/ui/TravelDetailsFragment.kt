@@ -1,4 +1,4 @@
-package com.valentinerutto.traveldiary
+package com.valentinerutto.traveldiary.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

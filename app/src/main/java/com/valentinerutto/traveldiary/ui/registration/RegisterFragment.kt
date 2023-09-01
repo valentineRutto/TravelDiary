@@ -1,6 +1,5 @@
 package com.valentinerutto.traveldiary.ui.registration
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.valentinerutto.traveldiary.R
-import com.valentinerutto.traveldiary.TravelEntry
 import com.valentinerutto.traveldiary.databinding.FragmentRegisterBinding
 
 /**

@@ -1,4 +1,4 @@
-package com.valentinerutto.traveldiary
+package com.valentinerutto.traveldiary.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.valentinerutto.traveldiary.R
 import com.valentinerutto.traveldiary.databinding.ActivityTravelEntryBinding
 import com.valentinerutto.traveldiary.ui.registration.RegisterLoginActivity
 

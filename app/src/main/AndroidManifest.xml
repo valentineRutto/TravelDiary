@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TravelEntry"
+            android:name=".ui.TravelEntry"
             android:exported="true"
             android:theme="@style/Theme.TravelDiary">
         </activity>
